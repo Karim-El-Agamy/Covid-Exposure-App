@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+	<title>Meet-in-the-Middle Feature</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato" />
+	<link
+		rel="stylesheet"
+		href="https://fonts.googleapis.com/css?family=Montserrat"
+		/>
+	<link
+		rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+		/>
+	<style>
+		body,
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+		font-family: "Lato", sans-serif;
+		}
+		.w3-bar,
+		h1,
+		button {
+		font-family: "Montserrat", sans-serif;
+		}
+		.fa-anchor,
+		.fa-coffee {
+		font-size: 200px;
+		}
+		html, body, #map-canvas {
+		height: 94.65%;
+		margin: 0px;
+		padding: 0px
+		}
+		#panel {
+		position: absolute;
+		top: 15%;
+		left: 30.5%;
+		z-index: 5;
+		background-color: #fff;
+		padding: 5px;
+		border: 1px solid #999;
+		}
+	</style>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOQlyb9nOZJbzcWibE1jOuEYFEbvEHD1A&callback=myMap"></script>
+	<script>
+		var directionsDisplay;
+		var directionsService = new google.maps.DirectionsService();
+		var map;
+		
+		function initialize() {
+		    directionsDisplay = new google.maps.DirectionsRenderer();
+		    var flint = new google.maps.LatLng(43.0150000000, -83.68817721757331);
+		    var mapOptions = {
+		        zoom: 11.5,
+		        center: flint,
+		    };
+		    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+		    directionsDisplay.setMap(map);
+		}
+		
+		function calcMidpoint() {
+		    var start = document.getElementById('start').value;
+		    var end = document.getElementById('end').value;
+		    var request = {
+		        origin: start,
+		        destination: end,
+		        travelMode: google.maps.TravelMode.DRIVING
+		    };
+		    directionsService.route(request, function (response, status) {
+		        if (status == google.maps.DirectionsStatus.OK) {
+		            directionsDisplay.setDirections(response);
+		            var numberofWaypoints = response.routes[0].overview_path.length;
+		            
+		            var midPoint=response.routes[0].overview_path[parseInt( numberofWaypoints / 2)];
+		            var marker = new google.maps.Marker({
+		                map: map,
+		                position:new google.maps.LatLng(midPoint.lat(),midPoint.lng()), 
+						title :' Mid Point',
+		            });    
+		        }
+		    });
+		}
+		
+		google.maps.event.addDomListener(window, 'load', initialize);
+	</script>
+	</head>
+	<body>
+		<!-- Navbar -->
+		<div class="w3-top">
+			<div class="w3-bar w3-red w3-card w3-left-align w3-large">
+				<a
+					class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red"
+					href="javascript:void(0);"
+					onclick="myFunction()"
+					title="Toggle Navigation Menu"
+					><i class="fa fa-bars"></i
+					></a>
+				<a href="home.html" class="w3-bar-item w3-button w3-padding-large w3-white"
+					>Home</a
+					>
+				<a
+					href="Covid-exposures.html"
+					class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
+					>Recent COVID-19 Exposures</a
+					>
+				<a
+					href="meet-in-the-middle.html"
+					class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
+					>Meet-in-the-Middle Feature</a
+					>
+				<a
+					href="open-businesses.html"
+					class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
+					>Open Businesses in Flint</a
+					>
+			</div>
+			<!-- Navbar on small screens -->
+			<div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large">
+				<a href="Covid-exposures.html" class="w3-bar-item w3-button w3-padding-large">Recent COVID-19 Exposures</a>
+				<a href="meet-in-the-middle.html" class="w3-bar-item w3-button w3-padding-large">Meet-in-the-Middle Feature</a>
+				<a href="#" class="w3-bar-item w3-button w3-padding-large">Open Businesses in Flint</a>
+			</div>
+		</div>
+		<br/><br/>
+		<h1>Meet-in-the-Middle Feature</h1>
+		<div id="panel">
+			<b>Your Location: </b>
+			<select id="start" onchange="calcMidpoint();">
+				<option value="Flint, Mi">Flint</option>
+				<option value="Grand Blanc, Mi">Grand Blanc</option>
+				<option value="Burton, Mi">Burton</option>
+				<option value="Davison, Mi">Davison</option>
+				<option value="Clio, Mi">Clio</option>
+				<option value="Flushing, Mi">Flushing</option>
+				<option value="Swartz Creek, Mi">Swartz Creek</option>
+				<option value="Mount Morris, Mi">Mount Morris</option>
+				<option value="Flint Township, Mi">Flint Township</option>
+				<option value="Grand Blanc Township, Mi">Grand Blanc Township</option>
+				<option value="Linden, Mi">Linden</option>
+				<option value="Montrose, Mi">Montrose</option>
+				<option value="Goodrich, Mi">Goodrich</option>
+				<option value="Fenton Township, Mi">Fenton Township</option>
+				<option value="Mount Morris Township, Mi">Mount Morris Township</option>
+				<option value="Vienna Township, Mi">Vienna Township</option>
+				<option value="Clayton Township, Mi">Clayton Township</option>
+				<option value="Otisville, Mi">Otisville</option>
+				<option value="Argentine Township, Mi">Argentine Township</option>
+				<option value="Montrose Township, Mi">Montrose Township</option>
+				<option value="Flushing Township, Mi">Flushing Township</option>
+				<option value="Beecher, Mi">Beecher</option>
+				<option value="Gaines, Mi">Gaines</option>
+			</select>
+			<b>Friend's Location: </b>
+			<select id="end" onchange="calcMidpoint();">
+				<option value="Flint, Mi">Flint</option>
+				<option value="Grand Blanc, Mi">Grand Blanc</option>
+				<option value="Burton, Mi">Burton</option>
+				<option value="Davison, Mi">Davison</option>
+				<option value="Clio, Mi">Clio</option>
+				<option value="Flushing, Mi">Flushing</option>
+				<option value="Swartz Creek, Mi">Swartz Creek</option>
+				<option value="Mount Morris, Mi">Mount Morris</option>
+				<option value="Flint Township, Mi">Flint Township</option>
+				<option value="Grand Blanc Township, Mi">Grand Blanc Township</option>
+				<option value="Linden, Mi">Linden</option>
+				<option value="Montrose, Mi">Montrose</option>
+				<option value="Goodrich, Mi">Goodrich</option>
+				<option value="Fenton Township, Mi">Fenton Township</option>
+				<option value="Mount Morris Township, Mi">Mount Morris Township</option>
+				<option value="Vienna Township, Mi">Vienna Township</option>
+				<option value="Clayton Township, Mi">Clayton Township</option>
+				<option value="Otisville, Mi">Otisville</option>
+				<option value="Argentine Township, Mi">Argentine Township</option>
+				<option value="Montrose Township, Mi">Montrose Township</option>
+				<option value="Flushing Township, Mi">Flushing Township</option>
+				<option value="Beecher, Mi">Beecher</option>
+				<option value="Gaines, Mi">Gaines</option>
+			</select>
+		</div>
+		<div id="map-canvas"></div>
+	</body>
+</html>
